@@ -3,7 +3,7 @@ wallpaper-maker
 
 Matlab code to generate 2D wallpaper patterns.
 
-This code is based on ideas and code shared by Alasdair Clarke and used to generate displayed in this paper:
+This code is based on ideas and code shared by Alasdair Clarke and used to generate displays in this paper:
 
 Clarke, A. D. F., Green, P. R., Halley, F., & Chantler, M. J. (2011). Similar Symmetries: The Role of Wallpaper Groups in Perceptual Texture Similarity. Symmetry, 3(2), 246–264. doi:10.3390/sym3020246
 
