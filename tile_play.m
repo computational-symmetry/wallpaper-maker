@@ -1,16 +1,50 @@
-%   Script to test wallpaper group generation and tiling routines.
+function tile_play( wp_group )
+%-------------------------------------------------------------------------
+%   tile_play( wp_group )
+%
+%   Function to test wallpaper group generation and tiling routines. 
+%   Generates and plots motifs from a given wallpaper group.
+%
+%   wp_group    : character array, group type
+%                   {'p1', 'p2', 'pm', 'cm', 'pmm', pmg', 'p4', 'p4m'}
 %   
+%   Written by Rick Gilmore, thatrickgilmore@gmail.com.
+%
+%   Based on code shared by Alasdair Clarke related to:
+%   Clarke, A. D. F., Green, P. R., Halley, F., & Chantler, M. J. (2011). 
+%   Similar Symmetries: The Role of Wallpaper Groups in Perceptual Texture 
+%   Similarity. Symmetry, 3(2), 246–264. doi:10.3390/sym3020246
+%
+%   Released under GPLv3 (http://www.gnu.org/licenses/gpl.html)
+
 %-------------------------------------------------------------------------
 %
 %   History
 %
 %   2013-04-21  rog wrote
+%   2013-04-23  rog modified documentation, into a function.
+
+%-------------------------------------------------------------------------
+%   
+%   Development notes
+%
+%   2013-04-23  Fix centering of 'L' tile. Causing problems.
+
+%-------------------------------------------------------------------------
+%-------------------------------------------------------------------------
+
+%   Parameter checking
+if ~ischar( wp_group )
+    error('Group must be character array.');
+end
+
+%   Add check for valid wallpaper group -- TO DO
 
 %   Parameters
 
 pix = 6;
-im_mode = 'randn';
-wp_group = 'p2';
+im_mode = 'randn'; % {'randn', 'bw'}
+%wp_group = 'pmm'; % {'p1', 'p2', 'pm', 'cm', 'pmm', pmg', 'p4', 'p4m'}
 rep_matrix = [ 4 4 ];
 plot_rows = 3;
 plot_cols = 3;

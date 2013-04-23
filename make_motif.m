@@ -5,17 +5,26 @@ function motif = make_motif( tile, group )
 %
 %   tile    : m x n sparse matrix
 %
-%   motif   : sparse matrix
+%   group   : character array specifying wallpaper group
+%           
+%               {'p1', 'p2', 'pm', 'cm', 'pmm', pmg', 'p4', 'p4m'}
 %
-%   Written by Rick Gilmore, thatrickgilmore@gmail.com
+%   Written by Rick Gilmore, thatrickgilmore@gmail.com.
 %
-%   Released under GPLv3
+%   Based on code shared by Alasdair Clarke related to:
+%   Clarke, A. D. F., Green, P. R., Halley, F., & Chantler, M. J. (2011). 
+%   Similar Symmetries: The Role of Wallpaper Groups in Perceptual Texture 
+%   Similarity. Symmetry, 3(2), 246–264. doi:10.3390/sym3020246
+%
+%   Released under GPLv3 (http://www.gnu.org/licenses/gpl.html)
 
 %--------------------------------------------------------------------------
 %
 %   History
 %
 %   2013-04-21 rog wrote
+%   
+%   2013-04-23 rog modified documentation, minor parameter fix.
 
 %--------------------------------------------------------------------------
 %
@@ -23,6 +32,8 @@ function motif = make_motif( tile, group )
 %
 %   2013-04-21  Need to add and test code for complete set of 17 Wallpaper
 %               groups.
+%--------------------------------------------------------------------------
+%--------------------------------------------------------------------------
 
 
 %   Input parameter checking
@@ -31,7 +42,9 @@ if ~ischar( group )
 end
 
 %   Test tile
-
+if ~ issparse( tile )
+    error('Tile must be a sparse matrix.');
+end
 
 % For each group, transform tile, then assemble motif from transformed
 % components

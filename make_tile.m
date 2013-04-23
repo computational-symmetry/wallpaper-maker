@@ -3,28 +3,49 @@ function tile = make_tile( pix, type, mode )
 %   Creates a 2D image wallpaper tile given a patch size in pixels, a
 %   type of tile shape and a mode for the pixel values.
 %
-%   pix     : m x n sparse matrix
+%   pix     : vector 1x2 or 2x1 or scalar indicating size of tile in pixels
 %
-%   type    : character string, specifies Wallpaper group type
+%   type    : character string, specifies shape type {'F', 'L', 'rand'}
 %
-%   motif   : character string, specifies pixel distribution
+%               'F' :   An F shape centered in the tile region.
+%               'L' :   An L shape centered in the tile region.
+%               'rand': A random array of pixels with the same density as
+%                           the F or L pattern.
+%
+%   mode   : character string, specifies pixel distribution type
+%           
+%               'randn' :   Pixel value chosen from random normal
+%                           distribution.
+%               'bw'    :   Black/white distribution, pattern coordinates
+%                           are 1, all other pixels are 0.
 %
 %   Written by Rick Gilmore, thatrickgilmore@gmail.com
 %
-%   Released under GPLv3
+%   Based on code shared by Alasdair Clarke related to:
+%   Clarke, A. D. F., Green, P. R., Halley, F., & Chantler, M. J. (2011). 
+%   Similar Symmetries: The Role of Wallpaper Groups in Perceptual Texture 
+%   Similarity. Symmetry, 3(2), 246–264. doi:10.3390/sym3020246
+%
+%   Released under GPLv3 (http://www.gnu.org/licenses/gpl.html)
 
 %--------------------------------------------------------------------------
 %
 %   History
 %
 %   2013-04-21 rog wrote
+%
+%   2013-04-23 rog fixed documentation.
 
 %--------------------------------------------------------------------------
 %
 %   Development notes
 %
-%   2013-04-21  Need to add and test code for complete set of 17 Wallpaper
-%               groups.
+%   2013-04-23  Consider adding uniform random pixel value mode.
+%               Consider adding feature to select tile from input.
+%
+%--------------------------------------------------------------------------
+%--------------------------------------------------------------------------
+
 
 %   Define defaults if unspecified
 
@@ -78,7 +99,8 @@ center_h = round( (pix+1)/2 );
 
 %   Make initial pattern i, j coordinates
 switch type
-    case {'L'}  % Minimal L shape has 3 pix on long and 2 pix on short
+    case {'L', 'f'}  % Minimal L shape has 3 pix on long and 2 pix on short
+        % Should scale shape to size of patch in pixels
         
         % Long segment
         i1 = (center_v - 1) : (center_v + 1);
@@ -92,7 +114,7 @@ switch type
         i = [ i1 i2 ];
         j = [ j1 j2 ];
         
-    case {'F'} % Minimal F is 4 pix long x 2 pix wide
+    case {'F', 'f'} % Minimal F is 4 pix long x 2 pix wide
         % Long segment
         i1 = (center_v - 2) : (center_v + 1);
         j1 = ones( 1, length( i1 ) ) * ( center_h - 1);
@@ -110,7 +132,8 @@ switch type
         j = [ j1 j2 j3 ];
         
     case {'rand', 'RAND'}
-        % Want 'sparsity' to be comparable to 'F' and 'L' so
+        % Want 'sparsity' to be comparable to 'F' and 'L' so fix n_pts
+        % Should be more generic.
         
         n_pts = 6;
         
