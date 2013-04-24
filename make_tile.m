@@ -35,6 +35,7 @@ function tile = make_tile( pix, type, mode )
 %   2013-04-21 rog wrote
 %
 %   2013-04-23 rog fixed documentation.
+%   2013-04-24 rog changed shape of L to address asymmetry problem.
 
 %--------------------------------------------------------------------------
 %
@@ -99,20 +100,31 @@ center_h = round( (pix+1)/2 );
 
 %   Make initial pattern i, j coordinates
 switch type
-    case {'L', 'f'}  % Minimal L shape has 3 pix on long and 2 pix on short
+    case {'L', 'l'}  % Minimal L shape has 4 pix on long and 2 pix on short
+        
         % Should scale shape to size of patch in pixels
         
-        % Long segment
-        i1 = (center_v - 1) : (center_v + 1);
-        j1 = ones( 1, length( i1 ) ) * center_h;
+        vert_seg_length = 4;
+        if pix(1) < vert_seg_length
+            error('Patch size in pixels must be > vertical segment length.');
+        end
         
+        % Long segment 1
+        vert_margin = round( ( pix(1) - vert_seg_length )/2 );
+        i1 = (1 + vert_margin):(1 + vert_margin) + vert_seg_length -1;
+        j1 = ones( 1, length( i1 ) ) * (center_h - 2);
+
+        % Long segment 2
+        i2 = i1;
+        j2 = ones( 1, length( i1 ) ) * (center_h - 1);
+
         % Short segment
-        i2 = center_v + 1;
-        j2 = center_h + 1;
+        i3 = [ max( i1 ) max( i1 )];
+        j3 = [ center_h center_h+1 ];   
         
         % Combine
-        i = [ i1 i2 ];
-        j = [ j1 j2 ];
+        i = [ i1 i2 i3 ];
+        j = [ j1 j2 j3 ];
         
     case {'F', 'f'} % Minimal F is 4 pix long x 2 pix wide
         % Long segment

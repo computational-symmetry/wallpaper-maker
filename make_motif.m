@@ -25,6 +25,7 @@ function motif = make_motif( tile, group )
 %   2013-04-21 rog wrote
 %   
 %   2013-04-23 rog modified documentation, minor parameter fix.
+%   2013-04-24 rog fixed bug in pm, pg, pmm, pmg, p4m
 
 %--------------------------------------------------------------------------
 %
@@ -32,6 +33,9 @@ function motif = make_motif( tile, group )
 %
 %   2013-04-21  Need to add and test code for complete set of 17 Wallpaper
 %               groups.
+%   
+%   2013-04-24  Found bug in p4m. Need to modify for lattice structure.
+%               FIXED.
 %--------------------------------------------------------------------------
 %--------------------------------------------------------------------------
 
@@ -61,14 +65,12 @@ switch group
     case {'pm', 'PM'}
         mh = transform_tile( tile, 'mirror-h');
     
-        motif = [ mh;
-                  tile ];
+        motif = [ mh tile ];
     
     case {'pg', 'PG'}
         mv = transform_tile( tile, 'mirror-v');
     
-        motif = [ tile;
-                  mv ];
+        motif = [ tile mv ];
     
     case {'cm', 'CM'}
         mv = transform_tile( tile, 'mirror-v');
@@ -78,19 +80,19 @@ switch group
     
     case { 'pmm', 'PMM' }
         mv = transform_tile( tile, 'mirror-v');
-        mh = transform_tile( tile, 'mirror-v');
+        mh = transform_tile( tile, 'mirror-h');
         mb = transform_tile( tile, 'mirror-hv');
         
-        motif = [ tile mv;
-                  mh   mb ];
+        motif = [ tile mh;
+                  mv   mb ];
               
     case { 'pmg', 'PMG' }
         mv = transform_tile( tile, 'mirror-v');
-        mh = transform_tile( tile, 'mirror-v');
+        mh = transform_tile( tile, 'mirror-h');
         mb = transform_tile( tile, 'mirror-hv');
        
-        motif = [ mb tile;
-                  mv mh ];
+        motif = [ tile mb;
+                   mv mh ];
     
     case { 'p4', 'P4' }
         r270 = transform_tile( tile, 'rotate-270' );
@@ -101,12 +103,17 @@ switch group
                   r90  r180 ];
               
     case { 'p4m', 'P4M' }
-        r270 = transform_tile( tile, 'rotate-270' );
-        r180 = transform_tile( tile, 'rotate-180' );
-        r90  = transform_tile( tile, 'rotate-90' );
-        
-        motif = [ tile r270;
-                  r90  r180 ];         
+
+          rot270 = transform_tile( tile, 'rotate-270');
+          rot270mh = transform_tile( rot270, 'mirror-h');
+          
+          blank_tile = zeros( size( tile ) );
+          
+          sub_motif = [ tile    blank_tile;
+                        blank_tile   rot270mh ];
+                    
+          motif = [ transform_tile( sub_motif, 'mirror-v' )    transform_tile( sub_motif, 'mirror-hv' );
+                    sub_motif                                  transform_tile( sub_motif, 'mirror-h') ];
               
     otherwise
         error('Wallpaper group value not supported.');

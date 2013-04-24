@@ -22,13 +22,14 @@ function tile_play( wp_group )
 %   History
 %
 %   2013-04-21  rog wrote
-%   2013-04-23  rog modified documentation, into a function.
+%   2013-04-23  rog modified documentation, turned into a function.
+%   2013-04-24  rog added titles, figure label. Fixed L tile problem
 
 %-------------------------------------------------------------------------
 %   
 %   Development notes
 %
-%   2013-04-23  Fix centering of 'L' tile. Causing problems.
+%   2013-04-23  Fix centering of 'L' tile. Causing problems. FIXED
 
 %-------------------------------------------------------------------------
 %-------------------------------------------------------------------------
@@ -58,15 +59,22 @@ tile_rand = make_tile( pix, 'rand', im_mode );
 % Plot tile
 
 fh = figure(1);
+set( fh, 'Name', ['Wallpaper Group: ' wp_group ]);
 
 subplot(plot_rows, plot_cols, 1);
 imagesc( tile_f );
+axis square;
+title('F tile');
 
 subplot(plot_rows, plot_cols, 2);
 imagesc( tile_l );
+axis square;
+title('L tile');
 
 subplot(plot_rows, plot_cols, 3);
 imagesc( tile_rand );
+axis square;
+title('Random tile');
 
 % Make motifs
 
@@ -78,21 +86,34 @@ motif_rand = make_motif( tile_rand, wp_group );
 
 subplot(plot_rows, plot_cols, 4);
 imagesc( motif_f );
+axis square;
+title('F motif');
 
 subplot(plot_rows, plot_cols, 5);
 imagesc( motif_l );
+axis square;
+title('L motif');
 
 subplot(plot_rows, plot_cols, 6);
 imagesc( motif_rand );
+axis square;
+title('Random motif');
 
 % Plot replications/tilings
 
 subplot(plot_rows, plot_cols, 7);
 imagesc( repmat( motif_f, rep_matrix ) );
+axis square;
+title('F tiling');
 
 subplot(plot_rows, plot_cols, 8);
 imagesc( repmat( motif_l, rep_matrix ) );
+axis square;
+title('L tiling');
 
 subplot(plot_rows, plot_cols, 9);
 imagesc( repmat( motif_rand, rep_matrix ) );
+axis square;
+title('Random tiling');
+
 
